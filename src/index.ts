@@ -1,24 +1,24 @@
 import Particle from './utils/Particle'
-import ParticlesCanvas from './utils/ParticlesCanvas'
+import ParticlesGround from './utils/ParticlesGround'
 
 const width = document.body.clientWidth
 const height = document.body.clientHeight
 
-const maxFrame = -1
+const maxFrame = 200
 let frame = 0
 
-const particlesCanvas = new ParticlesCanvas(width, height)
+const particlesGround = new ParticlesGround(width, height)
 
 for (let i = 0; i < 10; i++) {
-  particlesCanvas.createParticle(Particle)
+  particlesGround.createParticle(Particle)
 }
 
 (function updateFrame() {
   /* Update the canvas */
-  particlesCanvas.update()
-  particlesCanvas.clear()
+  particlesGround.update()
+  particlesGround.clear()
 
-  if (maxFrame === -1 || frame < maxFrame) requestAnimationFrame(() => {
+  if (frame < maxFrame) requestAnimationFrame(() => {
     frame++
     updateFrame()
   })

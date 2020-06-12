@@ -3,7 +3,7 @@ import Particle from "./Particle"
 /**
  * Create a new canvas to manipulate particles
  */
-export default class ParticlesCanvas {
+export default class ParticlesGround {
   constructor(
 
     /**
@@ -32,6 +32,7 @@ export default class ParticlesCanvas {
 
     /* Clear the canvas */
     this.clear()
+
   }
 
   /**
