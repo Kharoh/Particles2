@@ -3,11 +3,6 @@
  * @param ctx - The context of the canvas the particle will be on
  */
 export default class Particle {
-
-  /**
-   * Create a new Particle given the context of the canvas she will be on
-   * @param ctx - The context of the canvas the particle will be on
-   */
   constructor(
 
     /**
@@ -24,12 +19,14 @@ export default class Particle {
     const random = Math.random()
 
     /* Set the position of the particle on the canvas */
-    this.x = this.canvas.width / 2
-    this.y = this.canvas.height / 2
+    this.x = this.canvas.width / 2 + (Math.random() * 2 - 1) * 200
+    this.y = this.canvas.height / 2 + (Math.random() * 2 - 1) * 200
+
+    this.vector = [Math.cos(random * Math.PI * 2), Math.sin(random * Math.PI * 2)]
 
     /* Set the appearance of the particle */
-    this.radius = 3
-    this.color = '#f3abfd'
+    this.radius = 2
+    this.color = ['#f3abfd', '#8bc3f7', '#f8ed93', '#abfdb9'][Math.floor(Math.random() * 4)]
 
   }
 
@@ -49,14 +46,29 @@ export default class Particle {
   /**
    * Move the particle and return false if it wont exist anymore
    */
-  move(): boolean {
+  move(particles: Particle[]): boolean {
     /* Save the old positions */
     this.prevX = this.x
     this.prevY = this.y
 
+    /* Working the attraction center for the particles */
+    const attraction = particles.reduce((acc, particle) => [acc[0] + particle.x, acc[1] + particle.y], [0, 0]).map(val => val / particles.length)
+    /* Where the particle should go relative to its coordinates to join the attration center */
+    const rawAttractionVector = [attraction[0] - this.x, attraction[1] - this.y]
+    /* Working the norm of the vector so we can know the distance of the particle from the center and resize the vector */
+    const norm = Math.sqrt(rawAttractionVector[0] ** 2 + rawAttractionVector[1] ** 2)
+    /* Resizing the raw attraction vector */
+    const attractionVector = rawAttractionVector.map(val => norm ? val / norm : val)
+
+    /* Changing the direction vector of the particle */
+    this.vector = [
+      this.vector[0] + attractionVector[0],
+      this.vector[1] + attractionVector[1]
+    ]
+
     /* Move the particle */
-    this.x += 0.5
-    this.y += 0.5
+    this.x += this.vector[0]
+    this.y += this.vector[1]
 
     /* If it is now outside the borders of the ctx, return false */
     if ((this.x < 0 || this.x > this.canvas.width) || (this.y < 0 || this.y > this.canvas.height)) {
@@ -96,6 +108,11 @@ export default class Particle {
    * The latest y position of the particle
    */
   public prevY: number
+
+  /**
+   * The speed vector, mapping the speed and direction of the particle, first value is x modifier and second is y
+   */
+  public vector: number[]
 
   /**
    * The radius of the particle

@@ -4,12 +4,12 @@ import ParticlesGround from './utils/ParticlesGround'
 const width = document.body.clientWidth
 const height = document.body.clientHeight
 
-const maxFrame = 200
+const maxFrame = Infinity
 let frame = 0
 
 const particlesGround = new ParticlesGround(width, height)
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 5; i++) {
   particlesGround.createParticle(Particle)
 }
 

@@ -54,7 +54,7 @@ export default class ParticlesGround {
    */
   public update(): void {
     /* Move the particles and remove the ones outside the board */
-    this.particles = this.particles.filter(particle => particle.move())
+    this.particles = this.particles.filter(particle => particle.move(this.particles))
   }
 
   /**
