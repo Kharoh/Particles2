@@ -9,7 +9,7 @@ let frame = 0
 
 const particlesGround = new ParticlesGround(width, height)
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 300; i++) {
   particlesGround.createParticle(Particle)
 }
 
