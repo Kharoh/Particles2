@@ -17,5 +17,13 @@ body {
   width: 100vw;
   height: 100vh;
   font-family: 'Montserrat', sans-serif;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+canvas {
+  box-shadow: 0 4px 12px 0px rgba(0,0,0,.25);
 }
 

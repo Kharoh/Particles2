@@ -19,8 +19,8 @@ export default class Particle {
     const random = Math.random()
 
     /* Set the position of the particle on the canvas */
-    this.x = this.canvas.width / 2 + (Math.random() * 2 - 1) * 200
-    this.y = this.canvas.height / 2 + (Math.random() * 2 - 1) * 200
+    this.x = this.canvas.width / 2 + (Math.random() * 2 - 1) * 200 + 1000000000000
+    this.y = this.canvas.height / 2 + (Math.random() * 2 - 1) * 200 + 1000000000000
 
     this.vector = [Math.cos(random * Math.PI * 2), Math.sin(random * Math.PI * 2)]
 
@@ -36,7 +36,7 @@ export default class Particle {
    */
   render() {
     this.ctx.beginPath()
-    this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI)
+    this.ctx.arc(this.x % this.canvas.width, this.y % this.canvas.height, this.radius, 0, 2 * Math.PI)
     this.ctx.lineWidth = 2
     this.ctx.fillStyle = this.color
     this.ctx.fill()
@@ -56,7 +56,9 @@ export default class Particle {
     /* Where the particle should go relative to its coordinates to join the attration center */
     const rawAttractionVector = [attraction[0] - this.x, attraction[1] - this.y]
     /* Working the norm of the vector so we can know the distance of the particle from the center and resize the vector */
-    const norm = Math.sqrt(rawAttractionVector[0] ** 2 + rawAttractionVector[1] ** 2)
+    // const norm = Math.sqrt(rawAttractionVector[0] ** 2 + rawAttractionVector[1] ** 2)
+    const geometryIndex = 2
+    const norm = Math.pow(Math.pow(Math.abs(rawAttractionVector[0]), geometryIndex) + Math.pow(Math.abs(rawAttractionVector[1]), geometryIndex), 1 / geometryIndex)
     /* Resizing the raw attraction vector */
     const attractionVector = rawAttractionVector.map(val => norm ? val / norm : val)
 
@@ -69,11 +71,6 @@ export default class Particle {
     /* Move the particle */
     this.x += this.vector[0]
     this.y += this.vector[1]
-
-    /* If it is now outside the borders of the ctx, return false */
-    if ((this.x < 0 || this.x > this.canvas.width) || (this.y < 0 || this.y > this.canvas.height)) {
-      return false
-    }
 
     /* Render the particle at the new position */
     this.render()
